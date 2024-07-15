@@ -54,49 +54,58 @@ def place_ships(size):
     draw_boards()
     ship_valid = False
 
-    while not ship_valid:
-        ship_direction = input('Enter your ship direction "UP, DOWN, LEFT, RIGHT"\n').upper()
+    def place_ships(size):
+        ship_input = input('Enter your ship start location. E.g."H5" \n')
+        x, y = get_coordinates(ship_input)
+        player[x, y] = SHIP
+        print("ship_valid")
+        ship_valid = False
+        print(ship_valid)
 
-        if ship_direction == "UP":
-            # Check if all spots from (x, y-size) to (x, y-1) are not occupied
-            if all((x, y-i) not in player for i in range(1, size)):
-                for i in range(1, size + 1):
-                    player[x, y-i] = SHIP
-                ship_valid = True
+        while not ship_valid:
+            ship_direction = input('Enter your ship direction "UP, DOWN, LEFT, RIGHT"\n').upper()
+            if ship_direction == "UP":
+                y -= size
+                if (x, y) in player:
+                    player[x, y-1] = SHIP
+                    player[x, y-2] = SHIP
+                    player[x, y-3] = SHIP
+                    player[x, y-4] = SHIP
+                    ship_valid = True
+                else:
+                    print("Error: Ship goes out of bounds")
+            elif ship_direction == "DOWN":
+                y += size
+                if (x, y) in player:
+                    player[x, y+1] = SHIP
+                    player[x, y+2] = SHIP
+                    player[x, y+3] = SHIP
+                    player[x, y+4] = SHIP
+                    ship_valid = True
+                else:
+                    print("Error: Ship goes out of bounds")
+            elif ship_direction == "LEFT":
+                x -= size
+                if (x, y) in player:
+                    player[x-1, y] = SHIP
+                    player[x-2, y] = SHIP
+                    player[x-3, y] = SHIP
+                    player[x-4, y] = SHIP
+                    ship_valid = True
+                else:
+                    print("Error: Ship goes out of bounds")
+            elif ship_direction == "RIGHT":
+                x += size
+                if (x, y) in player:
+                    player[x+1, y] = SHIP
+                    player[x+2, y] = SHIP
+                    player[x+3, y] = SHIP
+                    player[x+4, y] = SHIP
+                    ship_valid = True
+                else:
+                    print("Error: Ship goes out of bounds")
             else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
-
-        elif ship_direction == "DOWN":
-            # Check if all spots from (x, y+1) to (x, y+size) are not occupied
-            if all((x, y+i) not in player for i in range(1, size)):
-                for i in range(1, size + 1):
-                    player[x, y+i] = SHIP
-                ship_valid = True
-            else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
-
-        elif ship_direction == "LEFT":
-            # Check if all spots from (x-size, y) to (x-1, y) are not occupied
-            if all((x-i, y) not in player for i in range(1, size)):
-                for i in range(1, size + 1):
-                    player[x-i, y] = SHIP
-                ship_valid = True
-            else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
-
-        elif ship_direction == "RIGHT":
-            # Check if all spots from (x+1, y) to (x+size, y) are not occupied
-            if all((x+i, y) not in player for i in range(1, size)):
-                for i in range(1, size + 1):
-                    player[x+i, y] = SHIP
-                ship_valid = True
-            else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
-
-        else:
-            print("Invalid direction")
-    clear()
-    draw_boards()
+                print("Invalid direction")
 
 
 def draw_boards():
