@@ -7,8 +7,12 @@ EMPTY = "   "
 SHIP = " # "
 NPC_SHIP = "   "
 
+ship_list = ["Class of ship:", "Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat", "Size:", 5, 4, 3, 3, 2]
+ship_sizes = board.Board((2, 6))
 npc = board.Board((11, 11))
 player = board.Board((11, 11))
+
+ship_sizes.populate(ship_list)
 
 
 def clear():
@@ -96,6 +100,7 @@ def place_ships(size):
 
 
 def draw_boards():
+    ship_sizes.draw(use_borders=False)
     print("₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
     npc.draw()
     print("\n₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
