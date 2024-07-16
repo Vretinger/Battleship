@@ -6,7 +6,7 @@ import time
 
 HIT = " X "
 MISS = " O "
-EMPTY = "   "
+EMPTY = " "
 SHIP = " # "
 NPC_SHIP = "   "
 
@@ -73,8 +73,13 @@ def is_valid_input(ship_input):
     return (x, y) in player
     
 
-def id_ship(user_board, ship_board, coord, ship_id):
-    user_board[coord] = SHIP
+def id_ship(user, ship_board, coord, ship_id):
+    if user == npc:
+        npc[coord] = NPC_SHIP
+        
+    else:
+        player[coord] = SHIP
+    
     ship_board[coord] = ship_id
 
     
@@ -164,9 +169,9 @@ def place_ships_randomly(user, ship_board, name, size, id):
                     ship_valid = True
 
         elif ship_direction == "DOWN":
-            if (x, y+size) in npc:
+            if (x, y+size) in user:
                 print(x, y+size)
-                if all(npc[(x, y + i)] == EMPTY for i in range(1, size)):
+                if all(user[(x, y + i)] == EMPTY for i in range(1, size)):
                     for i in range(1, size):
                         coord = (x, y + i)
                         ship_id = id
@@ -218,7 +223,7 @@ def players_turn():
             draw_boards()
             print("You missed!")
             attack_valid = True
-        elif npc[(x, y)] == SHIP:
+        elif npc[(x, y)] == NPC_SHIP:
             npc[(x, y)] = HIT
             id = npc_ship_board[(x, y)]
             del npc_ship_board[(x, y)]
@@ -296,6 +301,7 @@ def hard_npc_turn():
             attack_valid = True
         elif player[(x, y)] == SHIP:
             player[(x, y)] = HIT
+            del player_ship_board[(x, y)]
             ship_id = player_ship_board[(x, y)]
             sinked = check_sunken_ship(player_ship_board, ship_id)
             add_potential_targets(x, y)
@@ -303,6 +309,7 @@ def hard_npc_turn():
             draw_boards()
             if sinked:
                 print(f"Computer attacked {chr(x+64)}{y} and sank your ship!")
+                potential_targets = []
                 time.sleep(2)
             else:
                 print(f"Computer attacked {chr(x+64)}{y} and hit your ship!")
@@ -333,6 +340,20 @@ def expert_npc_turn():
                         y -= 1
                     else:
                         y += 1
+                if not ((x, y) in player) or player[(x, y)] in [MISS, HIT]:
+                    attack_direction_reverse = not attack_direction_reverse
+                    if attack_direction == "HORIZONTAL":
+                        x, y = hit_streak[0]
+                        if attack_direction_reverse:
+                            x -= 1
+                        else:
+                            x += 1
+                    elif attack_direction == "VERTICAL":
+                        x, y = hit_streak[0]
+                        if attack_direction_reverse:
+                            y -= 1
+                        else:
+                            y += 1
             else:
                 # Choose the next target from potential targets
                 x, y = potential_targets.pop(0)
@@ -347,19 +368,34 @@ def expert_npc_turn():
                 draw_boards()
                 print(f"Computer attacked {chr(x+64)}{y} and missed!")
                 attack_valid = True
+                if hit_streak:
+                    # Reverse direction if miss after hit streak
+                    attack_direction_reverse = not attack_direction_reverse
             elif player[(x, y)] == SHIP:
                 player[(x, y)] = HIT
                 ship_id = player_ship_board[(x, y)]
+                del player_ship_board[(x, y)]
                 sinked = check_sunken_ship(player_ship_board, ship_id)
+                hit_streak.append((x, y))
                 add_potential_targets(x, y)
                 clear()
                 draw_boards()
                 if sinked:
                     print(f"Computer attacked {chr(x+64)}{y} and sank your ship!")
                     time.sleep(2)
+                    potential_targets = []
+                    hit_streak = []
+                    attack_direction = None
+                    attack_direction_reverse = False
                 else:
                     print(f"Computer attacked {chr(x+64)}{y} and hit your ship!")
                     time.sleep(2)
+                    if len(hit_streak) == 2 and not attack_direction:
+                        # Determine direction based on two consecutive hits
+                        if hit_streak[0][0] == hit_streak[1][0]:
+                            attack_direction = "VERTICAL"
+                        else:
+                            attack_direction = "HORIZONTAL"
                 attack_valid = False
             else:
                 # If the location has already been guessed, continue the loop to find a new target
