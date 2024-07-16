@@ -1,6 +1,7 @@
 import board
 import os
 import random
+import sys
 
 HIT = " X "
 MISS = " O "
@@ -40,19 +41,23 @@ def get_coordinates(ship_input):
     # Convert letter to number
     x = ord(letter)-64
     y = int(number)
-    
+    if y == 0:
+        y = 10
+
     return x, y
 
 
 def is_valid_input(ship_input):
+    if ship_input.upper() == "EXIT":
+        sys.exit("Game exited by user.")
     if not len(ship_input) == 2:
         return False
     if not ship_input[1:].isdigit():
         return False
     if not ('A' <= ship_input[0] <= 'J'):
         return False
+
     x, y = get_coordinates(ship_input)
-    
     return (x, y) in player
     
     
@@ -65,6 +70,7 @@ def place_ships(name, size):
             continue
         x, y = get_coordinates(ship_input)
         if player[(x, y)] != EMPTY:
+            print(player[(x, y)])
             print("Starting position already occupied. Choose a different location.")
             continue
         player[x, y] = SHIP
@@ -160,7 +166,7 @@ def place_ships_randomly(name, size):
                     for i in range(1, size):
                         npc[(x + i, y)] = SHIP
                     ship_valid = True
-    
+    clear()
     draw_boards()
 
 
@@ -173,25 +179,44 @@ def draw_boards():
 
 
 def players_turn():
-
-
-def npc_turn():
+    attack_valid = False
+    while not attack_valid:
+        ship_input = input(f'Enter your the location of your attack! E.g."H5"\n').upper()
+        if not is_valid_input(ship_input):
+            print("Invalid input. Please enter a letter followed by a number within the board range.")
+            continue
+        x, y = get_coordinates(ship_input)
+        if npc[(x, y)] == EMPTY:
+            npc[(x, y)] = MISS
+            clear()
+            draw_boards()
+            print("You missed!")
+            attack_valid = True
+        elif npc[(x, y)] == SHIP:
+            npc[(x, y)] = HIT
+            clear()
+            draw_boards()
+            print("You hit! Attack again")
+        else:    
+            print("You have already guessed that location. Choose a different location.")
+            
 
 
 def game_play():
     game_finished = False
+    won = False
     while not game_finished:
         print("Player's turn!")
-        players_turn(won)
+        players_turn()
         if won == True:
             game_over("player")
             game_finished = True
         print("Computer's turn!")
-        npc_turn(won)
+        npc_turn()
         if won == True:
             game_over("npc")
             game_finished = True
-            
+
 
 def game_over(winner):
     if winner == "player":
@@ -206,11 +231,12 @@ def game_start():
     place_ships_randomly("Destroyer", 4)
     place_ships_randomly("Submarine", 4)
     place_ships_randomly("Patrol Boat", 3)
-    place_ships("Carrier", 5)
-    place_ships("Battleship", 4)
-    place_ships("Destroyer", 3)
-    place_ships("Submarine", 3)
-    place_ships("Patrol Boat", 2)
+    #place_ships("Carrier", 5)
+    #place_ships("Battleship", 4)
+    #place_ships("Destroyer", 3)
+    #place_ships("Submarine", 3)
+    #place_ships("Patrol Boat", 2)
+    game_play()
 
 def main():
     create_board(npc)
