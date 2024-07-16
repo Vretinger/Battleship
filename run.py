@@ -201,6 +201,27 @@ def players_turn():
             print("You have already guessed that location. Choose a different location.")
             
 
+def npc_turn():
+    attack_valid = False
+    while not attack_valid:
+        x = random.randint(1, 11)
+        y = random.randint(1, 11)
+        if player[(x, y)] == EMPTY:
+            player[(x, y)] = MISS
+            clear()
+            draw_boards()
+            print(f"Computer attacked {chr(x+64)}{y} and missed!")
+            attack_valid = True
+        elif player[(x, y)] == SHIP:
+            player[(x, y)] = HIT
+            clear()
+            draw_boards()
+            print(f"Computer attacked {chr(x+64)}{y} and hit a ship!\nComputer attacks again!")
+            attack_valid = False
+        else:
+            # If the location has already been guessed, continue the loop to find a new target
+            continue
+
 
 def game_play():
     game_finished = False
