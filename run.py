@@ -43,8 +43,8 @@ def get_coordinates(ship_input):
     return x, y
 
 
-def place_ships(size):
-    ship_input = input('Enter your ship start location. E.g."H5" \n')
+def place_ships(name, size):
+    ship_input = input(f'Enter your {name}({size}) start location. E.g."H5" \n')
     x, y = get_coordinates(ship_input)
     player[x, y] = SHIP
     clear()
@@ -56,40 +56,47 @@ def place_ships(size):
         ship_direction = input('Enter your ship direction "UP, DOWN, LEFT, RIGHT"\n').upper()
         if ship_direction == "UP":
             if (x, y-size) in player:
-               if all((x, y-i) not in player or player[(x, y-i)] == EMPTY for i in range(1, size)):
-                for i in range(1, size):
-                    player[x, y-i] = SHIP
-                    
-                ship_valid = True
+                if all((x, y-i) not in player or player[(x, y-i)] == EMPTY for i in range(1, size)):
+                    for i in range(1, size):
+                        player[x, y-i] = SHIP    
+                    ship_valid = True
+                else:
+                    print("Error: Ship placement is overlapping")
             else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
+                print("Error: Ship placement is out of bounds")
         elif ship_direction == "DOWN":
             if (x, y+size) in player:
                 if all((x, y+i) not in player or player[(x, y+i)] == EMPTY for i in range(1, size)):
-                 for i in range(1, size):
-                    player[x, y+i] = SHIP
-                ship_valid = True
+                    for i in range(1, size):
+                        player[x, y+i] = SHIP
+                    ship_valid = True
+                else:
+                    print("Error: Ship placement is overlapping")
             else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
+                print("Error: Ship placement is out of bounds")
         elif ship_direction == "LEFT":
             if (x-size, y) in player:
-               if all((x-i, y) not in player or player[(x-i, y)] == EMPTY for i in range(size)):
-                for i in range(1, size):
-                    player[x-i, y] = SHIP
-                ship_valid = True
+                if all((x-i, y) not in player or player[(x-i, y)] == EMPTY for i in range(1, size)):
+                    for i in range(1, size):
+                        player[x-i, y] = SHIP
+                    ship_valid = True
+                else:
+                    print("Error: Ship placement is overlapping")
             else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
+                print("Error: Ship placement is out of bounds")
         elif ship_direction == "RIGHT":
             if (x+size, y) in player:
-               if all((x+i, y) not in player or player[(x+i, y)] == EMPTY for i in range(size)):
-                for i in range(1, size):
-                    player[x+i, y] = SHIP
-                ship_valid = True
+                if all((x+i, y) not in player or player[(x+i, y)] == EMPTY for i in range(1, size)):
+                    for i in range(1, size):
+                        player[x+i, y] = SHIP
+                    ship_valid = True
+                else:
+                    print("Error: Ship placement is overlapping")
             else:
-                print("Error: Ship placement is out of bounds or overlaps another ship")
+                print("Error: Ship placement is out of bounds")
         else:
             print("Invalid direction")
-    
+    clear()
     draw_boards()
 
 def draw_boards():
@@ -100,11 +107,18 @@ def draw_boards():
     player.draw()
 
 
+def game_start():
+    place_ships("Carrier", 5)
+    place_ships("Battleship", 4)
+    place_ships("Destroyer", 3)
+    place_ships("Submarine", 3)
+    place_ships("Patrol Boat", 2)
+
 def main():
     create_board(npc)
     create_board(player)
     draw_boards()
-    place_ships(5)
+    game_start()
 
 
 main()
