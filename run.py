@@ -8,9 +8,8 @@ MISS = " O "
 EMPTY = "   "
 SHIP = " # "
 NPC_SHIP = "   "
-EASY = easy_npc_turn
-HARD = hard_npc_turn
-difficulty_level = EASY
+potential_targets = []
+
 
 ship_list = ["Class of ship:", "Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat", "Size:", 5, 4, 3, 3, 2]
 ship_sizes = board.Board((2, 6))
@@ -136,7 +135,7 @@ def place_ships(name, size, id):
     draw_boards()
 
 
-def place_ships_randomly(name, size, id):
+def place_ships_randomly(user, ship_board, name, size, id):
     ship_valid = False
 
     while not ship_valid:
@@ -147,13 +146,13 @@ def place_ships_randomly(name, size, id):
         ship_direction = random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
         
         if ship_direction == "UP":
-            if (x, y-size) in npc:
+            if (x, y-size) in user:
                 print(x, y-size)
-                if all(npc[(x, y - i)] == EMPTY for i in range(1, size)):
+                if all(user[(x, y - i)] == EMPTY for i in range(1, size)):
                     for i in range(1, size):
                         coord = (x, y - i)
                         ship_id = id
-                        id_ship(npc, npc_ship_board, coord, ship_id)
+                        id_ship(user, ship_board, coord, ship_id)
                     ship_valid = True
 
         elif ship_direction == "DOWN":
@@ -163,27 +162,27 @@ def place_ships_randomly(name, size, id):
                     for i in range(1, size):
                         coord = (x, y + i)
                         ship_id = id
-                        id_ship(npc, npc_ship_board, coord, ship_id)
+                        id_ship(user, ship_board, coord, ship_id)
                     ship_valid = True
 
         elif ship_direction == "LEFT":
-            if (x-size, y) in npc:
+            if (x-size, y) in user:
                 print(x-size, y)
-                if all(npc[(x - i, y)] == EMPTY for i in range(1, size)):
+                if all(user[(x - i, y)] == EMPTY for i in range(1, size)):
                     for i in range(1, size):
                         coord = (x - i, y)
                         ship_id = id
-                        id_ship(npc, npc_ship_board, coord, ship_id)
+                        id_ship(user, ship_board, coord, ship_id)
                     ship_valid = True
 
         elif ship_direction == "RIGHT":
-            if (x+size, y) in npc:
+            if (x+size, y) in user:
                 print(x+size, y)
-                if all(npc[(x + i, y)] == EMPTY for i in range(1, size)):
+                if all(user[(x + i, y)] == EMPTY for i in range(1, size)):
                     for i in range(1, size):
                         coord = (x + i, y)
                         ship_id = id
-                        id_ship(npc, npc_ship_board, coord, ship_id)
+                        id_ship(user, ship_board, coord, ship_id)
                     ship_valid = True
     clear()
     draw_boards()
@@ -253,6 +252,52 @@ def easy_npc_turn():
             continue
 
 
+def add_potential_targets(x, y):
+    # Adds surrounding coordinates to potential targets if they are within bounds and not already guessed
+    possible_targets = [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]
+    for target in possible_targets:
+        tx, ty = target
+        if (tx, ty) in player:
+            if player[target] not in [MISS, HIT] and target not in potential_targets:
+                potential_targets.append(target)
+
+
+def hard_npc_turn():
+    global potential_targets
+    attack_valid = False
+    
+    while not attack_valid:
+        if potential_targets:
+            # Choose the next target from potential targets
+            x, y = potential_targets.pop(0)
+        else:
+            # Randomly select a target if no potential targets
+            x = random.randint(1, 11)
+            y = random.randint(1, 11)
+
+        if player[(x, y)] == EMPTY:
+            player[(x, y)] = MISS
+            clear()
+            draw_boards()
+            print(f"Computer attacked {chr(x+64)}{y} and missed!")
+            attack_valid = True
+        elif player[(x, y)] == SHIP:
+            player[(x, y)] = HIT
+            ship_id = player_ship_board[(x, y)]
+            sinked = check_sunken_ship(player_ship_board, ship_id)
+            add_potential_targets(x, y)
+            clear()
+            draw_boards()
+            if sinked:
+                print(f"Computer attacked {chr(x+64)}{y} and sank your ship!")
+            else:
+                print(f"Computer attacked {chr(x+64)}{y} and hit your ship!")
+            attack_valid = False
+        else:
+            # If the location has already been guessed, continue the loop to find a new target
+            continue
+
+
 def player_difficulty(difficulty):
     difficulty()
 
@@ -292,17 +337,29 @@ def game_over(winner):
     elif winner == "npc":
         sys.exit("Computer won")
 
+
+def player_placment(randomly):
+    if randomly:
+        place_ships_randomly(player, player_ship_board, "Carrier", 6, 5)
+        place_ships_randomly(player, player_ship_board,"Battleship", 5, 4)
+        place_ships_randomly(player, player_ship_board,"Destroyer", 4, 3)
+        place_ships_randomly(player, player_ship_board,"Submarine", 4, 2)
+        place_ships_randomly(player, player_ship_board,"Patrol Boat", 3, 1)
+    else:
+        place_ships("Carrier", 5, 5)
+        place_ships("Battleship", 4, 4)
+        place_ships("Destroyer", 3, 3)
+        place_ships("Submarine", 3, 2)
+        place_ships("Patrol Boat", 2, 1)
+
+
 def game_start():
-    place_ships_randomly("Carrier", 6, 5)
-    place_ships_randomly("Battleship", 5, 4)
-    place_ships_randomly("Destroyer", 4, 3)
-    place_ships_randomly("Submarine", 4, 2)
-    place_ships_randomly("Patrol Boat", 3, 1)
-    #place_ships("Carrier", 5, 5)
-    #place_ships("Battleship", 4, 4)
-    #place_ships("Destroyer", 3, 3)
-    #place_ships("Submarine", 3, 2)
-    #place_ships("Patrol Boat", 2, 1)
+    place_ships_randomly(npc, npc_ship_board, "Carrier", 6, 5)
+    place_ships_randomly(npc, npc_ship_board,"Battleship", 5, 4)
+    place_ships_randomly(npc, npc_ship_board,"Destroyer", 4, 3)
+    place_ships_randomly(npc, npc_ship_board,"Submarine", 4, 2)
+    place_ships_randomly(npc, npc_ship_board,"Patrol Boat", 3, 1)
+    player_placment(True)
     game_play()
 
 def main():
@@ -310,6 +367,11 @@ def main():
     create_board(player)
     draw_boards()
     game_start()
+
+
+EASY = easy_npc_turn
+HARD = hard_npc_turn
+difficulty_level = HARD
 
 
 main()
