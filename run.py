@@ -1,5 +1,6 @@
 import board
 import os
+import random
 
 HIT = " X "
 MISS = " O "
@@ -99,6 +100,51 @@ def place_ships(name, size):
     clear()
     draw_boards()
 
+
+def place_ships_randomly(name, size):
+    ship_valid = False
+
+    while not ship_valid:
+        # Generate random starting position
+        x = random.randint(1, 11)
+        y = random.randint(1, 11)
+        # Randomly choose a direction
+        ship_direction = random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
+        
+        if ship_direction == "UP":
+            if (x, y-size) in npc:
+                print(x, y-size)
+                if all(npc[(x, y - i)] == EMPTY for i in range(1, size)):
+                    for i in range(1, size):
+                        npc[(x, y - i)] = SHIP
+                    ship_valid = True
+
+        elif ship_direction == "DOWN":
+            if (x, y+size) in npc:
+                print(x, y+size)
+                if all(npc[(x, y + i)] == EMPTY for i in range(1, size)):
+                    for i in range(1, size):
+                        npc[(x, y + i)] = SHIP
+                    ship_valid = True
+
+        elif ship_direction == "LEFT":
+            if (x-size, y) in npc:
+                print(x-size, y)
+                if all(npc[(x - i, y)] == EMPTY for i in range(1, size)):
+                    for i in range(1, size):
+                        npc[(x - i, y)] = SHIP
+                    ship_valid = True
+
+        elif ship_direction == "RIGHT":
+            if (x+size, y) in npc:
+                print(x+size, y)
+                if all(npc[(x + i, y)] == EMPTY for i in range(1, size)):
+                    for i in range(1, size):
+                        npc[(x + i, y)] = SHIP
+                    ship_valid = True
+    
+    draw_boards()
+
 def draw_boards():
     ship_sizes.draw(use_borders=False)
     print("₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
@@ -108,6 +154,11 @@ def draw_boards():
 
 
 def game_start():
+    place_ships_randomly("Carrier", 6)
+    place_ships_randomly("Battleship", 5)
+    place_ships_randomly("Destroyer", 4)
+    place_ships_randomly("Submarine", 4)
+    place_ships_randomly("Patrol Boat", 3)
     place_ships("Carrier", 5)
     place_ships("Battleship", 4)
     place_ships("Destroyer", 3)
