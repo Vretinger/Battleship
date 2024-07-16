@@ -2,13 +2,21 @@ import board
 import os
 import random
 import sys
+import time
 
 HIT = " X "
 MISS = " O "
 EMPTY = "   "
 SHIP = " # "
 NPC_SHIP = "   "
+
+# List to keep track of potential targets around hits
 potential_targets = []
+
+# Variables to track hit streak and direction
+hit_streak = []
+attack_direction = None  # None, "HORIZONTAL", or "VERTICAL"
+attack_direction_reverse = False
 
 
 ship_list = ["Class of ship:", "Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat", "Size:", 5, 4, 3, 3, 2]
@@ -245,8 +253,13 @@ def easy_npc_turn():
             del player_ship_board[(x, y)]
             clear()
             draw_boards()
-            print(f"Computer attacked {chr(x+64)}{y} and hit a ship!\nComputer attacks again!")
-            attack_valid = False
+            if sinked:
+                print(f"Computer attacked {chr(x+64)}{y} and sank your ship!")
+                time.sleep(2)
+            else:
+                print(f"Computer attacked {chr(x+64)}{y} and hit your ship!")
+                time.sleep(2)
+                attack_valid = False
         else:
             # If the location has already been guessed, continue the loop to find a new target
             continue
@@ -290,12 +303,67 @@ def hard_npc_turn():
             draw_boards()
             if sinked:
                 print(f"Computer attacked {chr(x+64)}{y} and sank your ship!")
+                time.sleep(2)
             else:
                 print(f"Computer attacked {chr(x+64)}{y} and hit your ship!")
+                time.sleep(2)
             attack_valid = False
         else:
             # If the location has already been guessed, continue the loop to find a new target
             continue
+
+
+def expert_npc_turn():
+    global potential_targets, hit_streak, attack_direction, attack_direction_reverse
+    attack_valid = False
+    
+    while not attack_valid:
+        if potential_targets:
+            if hit_streak and attack_direction:
+                # Continue along the current attack direction
+                if attack_direction == "HORIZONTAL":
+                    x, y = hit_streak[-1]
+                    if attack_direction_reverse:
+                        x -= 1
+                    else:
+                        x += 1
+                elif attack_direction == "VERTICAL":
+                    x, y = hit_streak[-1]
+                    if attack_direction_reverse:
+                        y -= 1
+                    else:
+                        y += 1
+            else:
+                # Choose the next target from potential targets
+                x, y = potential_targets.pop(0)
+        else:
+            # Randomly select a target if no potential targets
+            x = random.randint(1, 11)
+            y = random.randint(1, 11)
+        if (x, y) in player:
+            if player[(x, y)] == EMPTY:
+                player[(x, y)] = MISS
+                clear()
+                draw_boards()
+                print(f"Computer attacked {chr(x+64)}{y} and missed!")
+                attack_valid = True
+            elif player[(x, y)] == SHIP:
+                player[(x, y)] = HIT
+                ship_id = player_ship_board[(x, y)]
+                sinked = check_sunken_ship(player_ship_board, ship_id)
+                add_potential_targets(x, y)
+                clear()
+                draw_boards()
+                if sinked:
+                    print(f"Computer attacked {chr(x+64)}{y} and sank your ship!")
+                    time.sleep(2)
+                else:
+                    print(f"Computer attacked {chr(x+64)}{y} and hit your ship!")
+                    time.sleep(2)
+                attack_valid = False
+            else:
+                # If the location has already been guessed, continue the loop to find a new target
+                continue
 
 
 def player_difficulty(difficulty):
@@ -371,7 +439,8 @@ def main():
 
 EASY = easy_npc_turn
 HARD = hard_npc_turn
-difficulty_level = HARD
+EXPERT = expert_npc_turn
+difficulty_level = EXPERT
 
 
 main()
