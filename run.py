@@ -172,6 +172,34 @@ def draw_boards():
     player.draw()
 
 
+def players_turn():
+
+
+def npc_turn():
+
+
+def game_play():
+    game_finished = False
+    while not game_finished:
+        print("Player's turn!")
+        players_turn(won)
+        if won == True:
+            game_over("player")
+            game_finished = True
+        print("Computer's turn!")
+        npc_turn(won)
+        if won == True:
+            game_over("npc")
+            game_finished = True
+            
+
+def game_over(winner):
+    if winner == "player":
+        print("Player won")
+
+    elif winner == "npc":
+        print("Computer won")
+
 def game_start():
     place_ships_randomly("Carrier", 6)
     place_ships_randomly("Battleship", 5)
