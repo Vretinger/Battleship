@@ -450,6 +450,9 @@ def player_placment(randomly):
         place_ships_randomly(player, player_ship_board,"Submarine", 4, 2)
         place_ships_randomly(player, player_ship_board,"Patrol Boat", 3, 1)
     else:
+        player[0, 0] = SHIP
+        clear()
+        draw_boards()
         place_ships("Carrier", 5, 5)
         place_ships("Battleship", 4, 4)
         place_ships("Destroyer", 3, 3)
@@ -457,26 +460,142 @@ def player_placment(randomly):
         place_ships("Patrol Boat", 2, 1)
 
 
-def game_start():
+def game_start(placment_option):
+    clear_screen()
+    print("Starting the game...")
+    clear_screen()
+    time.sleep(2)  # Pause for dramatic effect
     place_ships_randomly(npc, npc_ship_board, "Carrier", 6, 5)
     place_ships_randomly(npc, npc_ship_board,"Battleship", 5, 4)
     place_ships_randomly(npc, npc_ship_board,"Destroyer", 4, 3)
     place_ships_randomly(npc, npc_ship_board,"Submarine", 4, 2)
     place_ships_randomly(npc, npc_ship_board,"Patrol Boat", 3, 1)
-    player_placment(True)
+    player_placment(placment_option)
     game_play()
 
 def main():
     create_board(npc)
     create_board(player)
-    draw_boards()
-    game_start()
+    main_menu()
+    
+
+def select_placement():
+    while True:
+        clear_screen()
+        print("""
+        ====================================
+                    BATTLESHIP
+        ====================================
+            Do you want to place your ships 
+                manually or randomly?
+
+        1. Manually
+        2. Randomly
+        """)
+
+        choice = input("Enter your choice (1-2): ").strip()
+            
+        if choice == "1":
+            game_start(False)
+        elif choice == "2":
+            game_start(True)
+        else:
+            print("Invalid choice. Please enter a number between 1 and 3.")
+            time.sleep(2)
+
+
+def select_difficulty():
+    while True:
+        clear_screen()
+        print("""
+        ====================================
+                    BATTLESHIP
+        ====================================
+            Pick your difficulty level!
+        1. EASY
+        2. HARD
+        3. EXPERT
+        """)
+
+        choice = input("Enter your choice (1-3): ").strip()
+            
+        if choice == "1":
+            difficulty_level = EASY
+            select_placement()
+        elif choice == "2":
+            difficulty_level = HARD
+            select_placement()
+        elif choice == "3":
+            difficulty_level = EXPERT
+            select_placement()
+        else:
+            print("Invalid choice. Please enter a number between 1 and 3.")
+            time.sleep(2)
+
+
+def clear_screen():
+    print("\033c", end="")
+
+def display_instructions():
+    clear_screen()
+    instructions = """
+    Welcome to Battleship!
+
+    Instructions:
+    1. The game is played on a 10x10 grid.
+    2. Each player has a fleet of ships of different lengths:
+       - Carrier (5 cells)
+       - Battleship (4 cells)
+       - Destroyer (3 cells)
+       - Submarine (3 cells)
+       - Patrol Boat (2 cells)
+    3. Players take turns guessing the coordinates to attack.
+    4. If a guess hits an enemy ship, it is marked as 'X'.
+    5. If a guess misses, it is marked as 'O'.
+    6. The game continues until all ships of one player are sunk.
+    
+    How to Play:
+    - Enter the coordinates in the format "LetterNumber" (e.g., "H5").
+    - After placing all ships, the game will start, and you can begin attacking.
+    - If a player hits a ship, they will attack again.
+
+    Press Enter to return to the main menu.
+    """
+    print(instructions)
+    input()
+    
+
+def main_menu():
+    while True:
+        clear_screen()
+        print("""
+        ====================================
+                    BATTLESHIP
+        ====================================
+        1. Start Game
+        2. Instructions
+        3. Exit
+        """)
+        
+        choice = input("Enter your choice (1-3): ").strip()
+        
+        if choice == "1":
+            select_difficulty()
+        elif choice == "2":
+            display_instructions()
+        elif choice == "3":
+            clear_screen()
+            print("Exiting the game. Goodbye!")
+            time.sleep(2)
+            sys.exit()
+        else:
+            print("Invalid choice. Please enter a number between 1 and 3.")
+            time.sleep(2)
 
 
 EASY = easy_npc_turn
 HARD = hard_npc_turn
 EXPERT = expert_npc_turn
-difficulty_level = EXPERT
-
+difficulty_level = EASY
 
 main()
