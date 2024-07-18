@@ -421,7 +421,7 @@ def main_menu():
         3. Exit
         """)
         
-        choice = input("Enter your choice (1-3): ").strip()
+        choice = input("Enter your choice (1-3): \n").strip()
         
         if choice == "1":
             select_difficulty()
@@ -480,7 +480,7 @@ def select_difficulty():
         3. EXPERT
         """)
 
-        choice = input("Enter your choice (1-3): ").strip()
+        choice = input("Enter your choice (1-3): \n").strip()
             
         if choice == "1":
             difficulty_level = EASY
@@ -511,7 +511,7 @@ def select_placement():
         2. Randomly
         """)
 
-        choice = input("Enter your choice (1-2): ").strip()
+        choice = input("Enter your choice (1-2): \n").strip()
             
         if choice == "1":
             game_start(False)

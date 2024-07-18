@@ -1,1 +1,1 @@
-# Your requirements go here
+board==1.0
