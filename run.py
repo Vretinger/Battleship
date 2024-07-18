@@ -3,6 +3,7 @@ import os
 import random
 import sys
 import time
+import io
 
 # Constants for board markers
 HIT = " X "
@@ -40,8 +41,8 @@ def clear():
 def create_board(user):
     user.populate(" 1234567890")  # Populate the top row with numbers
     user.populate("ABCDEFGHIJ", user.iterline((1, 0), (1, 0)))  # Populate the first column with letters
-    for x in range(1, 11):
-        for y in range(1, 11):
+    for x in range(1, 10):
+        for y in range(1, 10):
             user[x, y] = EMPTY  # Fill the rest of the board with EMPTY
 
 # Converts input coordinates to numerical format
@@ -143,8 +144,8 @@ def place_ships(name, size, id):
 def place_ships_randomly(user, ship_board, name, size, id):
     ship_valid = False
     while not ship_valid:
-        x = random.randint(1, 11)
-        y = random.randint(1, 11)
+        x = random.randint(1, 10)
+        y = random.randint(1, 10)
         ship_direction = random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
         if ship_direction == "UP":
             if (x, y-size) in user:
@@ -181,6 +182,7 @@ def place_ships_randomly(user, ship_board, name, size, id):
     clear()
     draw_boards()
 
+
 # Displays both player and NPC boards
 def draw_boards():
     print("""
@@ -189,10 +191,10 @@ def draw_boards():
         ====================================
         """)
     ship_sizes.draw(use_borders=False)
-    print("₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
+    print("₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪")
     npc.draw()
-    print("\n₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
     player.draw()
+
 
 # Manages player's turn to attack
 def players_turn():
@@ -235,8 +237,8 @@ def check_sunken_ship(ship_board, id):
 def easy_npc_turn():
     attack_valid = False
     while not attack_valid:
-        x = random.randint(1, 11)
-        y = random.randint(1, 11)
+        x = random.randint(1, 10)
+        y = random.randint(1, 10)
         if player[(x, y)] == EMPTY:
             player[(x, y)] = MISS
             clear()
@@ -280,8 +282,8 @@ def hard_npc_turn():
             x, y = potential_targets.pop(0)
         else:
             # Randomly select a target if no potential targets
-            x = random.randint(1, 11)
-            y = random.randint(1, 11)
+            x = random.randint(1, 10)
+            y = random.randint(1, 10)
 
         if player[(x, y)] == EMPTY:
             player[(x, y)] = MISS
@@ -349,8 +351,8 @@ def expert_npc_turn():
                 x, y = potential_targets.pop(0)
         else:
             # Randomly select a target if no potential targets
-            x = random.randint(1, 11)
-            y = random.randint(1, 11)
+            x = random.randint(1, 10)
+            y = random.randint(1, 10)
         if (x, y) in player:
             if player[(x, y)] == EMPTY:
                 player[(x, y)] = MISS
