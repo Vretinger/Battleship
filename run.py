@@ -34,7 +34,7 @@ def clear():
     if os.name == 'nt':  # For Windows
         os.system('cls')
     else:  # For Linux and MacOS
-        os.system('clear')
+        os.system('printf "\033c"')  # ANSI escape sequence to clear screen
 
 # Creates and populates the game board
 def create_board(user):
