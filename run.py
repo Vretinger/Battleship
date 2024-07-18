@@ -3,7 +3,6 @@ import os
 import random
 import sys
 import time
-import io
 
 # Constants for board markers
 HIT = " X "
@@ -41,8 +40,8 @@ def clear():
 def create_board(user):
     user.populate(" 1234567890")  # Populate the top row with numbers
     user.populate("ABCDEFGHIJ", user.iterline((1, 0), (1, 0)))  # Populate the first column with letters
-    for x in range(1, 10):
-        for y in range(1, 10):
+    for x in range(1, 11):
+        for y in range(1, 11):
             user[x, y] = EMPTY  # Fill the rest of the board with EMPTY
 
 # Converts input coordinates to numerical format
@@ -144,8 +143,8 @@ def place_ships(name, size, id):
 def place_ships_randomly(user, ship_board, name, size, id):
     ship_valid = False
     while not ship_valid:
-        x = random.randint(1, 10)
-        y = random.randint(1, 10)
+        x = random.randint(1, 11)
+        y = random.randint(1, 11)
         ship_direction = random.choice(["UP", "DOWN", "LEFT", "RIGHT"])
         if ship_direction == "UP":
             if (x, y-size) in user:
@@ -182,7 +181,6 @@ def place_ships_randomly(user, ship_board, name, size, id):
     clear()
     draw_boards()
 
-
 # Displays both player and NPC boards
 def draw_boards():
     print("""
@@ -191,10 +189,10 @@ def draw_boards():
         ====================================
         """)
     ship_sizes.draw(use_borders=False)
-    print("₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪")
+    print("₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
     npc.draw()
+    print("\n₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
     player.draw()
-
 
 # Manages player's turn to attack
 def players_turn():
@@ -225,13 +223,16 @@ def players_turn():
                 print("You hit and sunk the ship!")
             else:
                 print("You hit the ship!")
-            attack_valid = True
+            attack_valid = False
         elif npc[(x, y)] == HIT or npc[(x, y)] == MISS:
             print("You already attacked that location. Try a different location.")
 
 # Checks if a ship is sunk
 def check_sunken_ship(ship_board, id):
-    return id not in ship_board
+    for coord, data in ship_board.iterdata():
+        if data == id:
+            return False
+    return True
 
 # Manages easy NPC's turn to attack
 def easy_npc_turn():
@@ -248,6 +249,8 @@ def easy_npc_turn():
         elif player[(x, y)] == SHIP:
             player[(x, y)] = HIT
             del player_ship_board[(x, y)]
+            ship_id = player_ship_board[(x, y)]
+            sinked = check_sunken_ship(player_ship_board, ship_id)
             clear()
             draw_boards()
             if sinked:
@@ -399,7 +402,7 @@ def player_difficulty(difficulty):
 
 # Checks if all ships are sunk, indicating a win
 def check_win(ship_board):
-    return len(ship_board.items) != 0
+    return bool(ship_board)
 
 # Ends the game with a win message
 def game_over(winner):
