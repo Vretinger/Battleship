@@ -7,9 +7,9 @@ import time
 # Constants for board markers
 HIT = " X "
 MISS = " O "
-EMPTY = " "
+EMPTY = " ~ "
 SHIP = " # "
-NPC_SHIP = "   "
+NPC_SHIP = " ~ "
 
 # Lists and Variables
 potential_targets = []  # List to keep track of potential targets around hits
@@ -183,16 +183,16 @@ def place_ships_randomly(user, ship_board, name, size, id):
 
 # Displays both player and NPC boards
 def draw_boards():
-    print("₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
+    print("₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪")
     npc.draw(use_borders=False)
-    print("\n₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
+    print("₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪")
     player.draw(use_borders=False)
 
 # Manages player's turn to attack
 def players_turn():
     attack_valid = False
     while not attack_valid:
-        ship_input = input(f'Enter your the location of your attack! E.g."H5"\n').upper()
+        ship_input = input(f'Your turn! Enter your the location of your attack! E.g."H5"\n').upper()
         if not is_valid_input(ship_input):
             print("Invalid input. Please enter a letter followed by a number within the board range.")
             continue
@@ -566,8 +566,8 @@ def game_play():
     game_finished = False
     won = False
     clear()
+    draw_boards()
     while not game_finished:
-        print("Player's turn!")
         players_turn()
         if won == True:
             game_over("player")
