@@ -183,16 +183,10 @@ def place_ships_randomly(user, ship_board, name, size, id):
 
 # Displays both player and NPC boards
 def draw_boards():
-    print("""
-        ====================================
-                    BATTLESHIP
-        ====================================
-        """)
-    ship_sizes.draw(use_borders=False)
     print("₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
-    npc.draw()
+    npc.draw(use_borders=False)
     print("\n₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪₪")
-    player.draw()
+    player.draw(use_borders=False)
 
 # Manages player's turn to attack
 def players_turn():
@@ -571,6 +565,7 @@ def game_start(placment_option):
 def game_play():
     game_finished = False
     won = False
+    clear()
     while not game_finished:
         print("Player's turn!")
         players_turn()
