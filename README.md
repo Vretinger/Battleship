@@ -4,9 +4,9 @@ Welcome to the Battleship Game! This project is a python terminal-based implemen
 
 The game involves strategic placement and guessing of ship locations to sink your opponent's fleet before they sink yours.
 
-Press me to play the live version of the game!
+[Press me to play the live version of the game!](https://ci-battleship-8283296ac1b0.herokuapp.com/)
 
-"add images here"
+<img src="Images/BattleShipShowcaseImage.png" alt="Battleship game, Showcase on different devices" width="600" height="400">
 
 
 ## Game Instructions
@@ -38,22 +38,43 @@ The first player to sink all the opponent's ships wins the game.
 ## Features
 
 ### Existing features
-- **Main Menu**: Start the game, view instructions, or exit. *add image*
-- **Player and Computer Boards**: Separate boards for the player and the Computer. *add image*
-- **Ship Placement**: Place ships manually or randomly. *add image*
-- **Turn-based Gameplay**: Players take turns guessing the location of the opponent's ships. *add image*
-- **Different difficulty levels**: Player can chose between three diffrent difficulties.
-    - **Easy**: In easy mode the computer will randomly guess next attack location even after hit.
-    - **Hard**: In hard mode the computer will guess random location around the hit location til the ship has sunked.
-    - **Expert**: In expert mode the computer will figure out in what direction the ship is after the second hit on the ship and will then attack along that line til the ship has sunked.
-- **Clear Terminal Screen**: The terminal screen is cleared to enhance gameplay experience. *add image*
-- **Accept user input**
-- **Validate the input**
-    - You cannot place ships outside the boarder
-    - Ships cannot be overlapping.
-    - When attacking cordinates cannot be outside the border.
-    - You must enter correct cordinates in correct format. (Letter, Number)
-    - You cannot guess same location twice.
+- **Main Menu**: Start the game, view instructions, or exit.
+  
+  ![An image showing the main menu with 3 different options](Images/MainMenu.png)
+
+- **Player and Computer Boards**: Separate boards for the player and the Computer.
+  
+  ![An image of the game boards showing 2 separate boards. One for the computer and one for the player](Images/GameBoards.png)
+
+- **Ship Placement**: Place ships manually or randomly.
+  
+  ![Showing the menu selection to pick either manual placement or random placement](Images/PlacementOption.png)
+
+- **Turn-based Gameplay**: Players take turns guessing the location of the opponent's ships.
+
+- **Different Difficulty Levels**: Players can choose between three different difficulties.
+  
+  - **Easy**: In easy mode, the computer will randomly guess the next attack location even after a hit.
+  - **Hard**: In hard mode, the computer will guess random locations around the hit location until the ship is sunk.
+  - **Expert**: In expert mode, the computer will determine the direction of the ship after the second hit and will then attack along that line until the ship is sunk.
+  
+  ![Showing the menu option for different difficulty levels](Images/DifficultyLevels.png)
+
+- **Clear Terminal Screen**: The terminal screen is cleared to enhance the gameplay experience.
+
+- **Accept User Input**:
+  
+  ![Shows a simple image of writing in a coordinate](Images/EnterInput.png)
+
+- **Validate the Input**:
+  - You cannot place ships outside the board.
+  - Ships cannot overlap.
+  - When attacking, coordinates cannot be outside the board.
+  - You must enter coordinates in the correct format (Letter, Number).
+  - You cannot guess the same location twice.
+  
+  ![Shows an image of different attempts of input that are either already guessed, outside the board, or just random inputs](Images/ValidateInput.png)
+
 
 ### Future features
 - **Local Multiplayer**: Allow two players to play on the same device.
@@ -94,3 +115,34 @@ I have manually tested this project. The testing covered the following areas:
 - **Board Display**: Ensured the board is displayed correctly after each move, with accurate representation of hits, misses, and ships.
 - **Menu Navigation**: Verified that all menu options (e.g., start game, select difficulty, instructions) are accessible and function as expected.
 - **Instructions Display**: Checked that the instructions are clearly displayed and provide sufficient information for gameplay.
+
+
+### Bug Fixing
+- **Bug**: NPC Hitting Outside Board
+    - **Issue**: The NPC occasionally targeted positions outside the valid board range.
+    - **Solution**: Implemented checks to ensure the NPC only selects valid coordinates within the board boundaries.
+- **Bug**: Expert NPC Not Attacking in Direction of Adjacent Hits
+    - **Issue**: The Expert NPC did not always continue attacking in the direction of adjacent hits.
+    - **Solution**: Improved the logic for the Expert NPC to remember the direction of hits and continue attacking along that line until the ship is sunk or a miss is encountered.
+- **Bug**: Placing Ships Left or Right
+    - **Issue**: The logic for placing ships to the left or right did not correctly account for board boundaries.
+    - **Solution**: Added checks to ensure ships placed left or right do not go out of bounds and correctly occupy the intended cells.
+
+
+## Deployment
+This project was deployed using Code Institue's mock terminal for Heroku.
+- **Steps for deployment**
+    - Fork or clone this repository
+    - Create a new Heroku app
+    - Add a config Var in Heroku's Settings. The key is PORT and the value is 8000.
+    - Set the buildpacks to "Python" and "NodeJS" in that order
+    - Link the Heroku app to the repository
+    - Click on **Deploy**
+
+
+## Credits
+- Code Institute for the deployment terminal
+- [Tim Golden for the Board module pack.](https://pypi.org/project/board/#description)
+
+
+
