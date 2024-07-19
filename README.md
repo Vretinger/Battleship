@@ -75,3 +75,22 @@ The game board is represented by a 2D grid where each cell can hold different va
 - **npc and player**: Board objects representing the NPC’s and player’s game boards.
 - **npc_ship_board and player_ship_board**: Board objects tracking the ships' id on the NPC’s and player’s boards to determen when a ship is sunked.
 
+## Testing
+I have manually tested this project. The testing covered the following areas:
+
+#### **Unit Tests**
+- **Board Initialization**: Verified that the game boards for both the player and computer are correctly initialized and displayed.
+- **Ship Placement**: Tested manual and random ship placement to ensure ships are placed within bounds and do not overlap.
+- **Coordinate Translation**: Ensured that user inputs (e.g., "H5") are correctly translated into board coordinates.
+- **Ship Identification**: Confirmed that ships are correctly identified and placed on the board based on user input.
+- **Attack Functionality**: Checked that attacks are correctly registered on the board, including hits, misses, and marking of sunken ships.
+
+#### **Integration Tests**
+- **Game Flow**: Ensured smooth game flow from the main menu to gameplay and end game scenarios.
+- **Player Turns**: Verified that player turns correctly handle attacks and display updated boards.
+- **Computer Turns**: Tested computer turns across all difficulty levels (Easy, Hard, Expert) to ensure they make valid moves and follow the intended strategy.
+- **Win Conditions**: Confirmed that the game correctly identifies win conditions and displays appropriate messages.
+#### **User Interface Tests**
+- **Board Display**: Ensured the board is displayed correctly after each move, with accurate representation of hits, misses, and ships.
+- **Menu Navigation**: Verified that all menu options (e.g., start game, select difficulty, instructions) are accessible and function as expected.
+- **Instructions Display**: Checked that the instructions are clearly displayed and provide sufficient information for gameplay.
