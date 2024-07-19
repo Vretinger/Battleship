@@ -18,17 +18,13 @@ attack_direction = None  # None, "HORIZONTAL", or "VERTICAL"
 attack_direction_reverse = False  # Flag for attack direction
 
 # Ship details and boards initialization
-ship_list = ["Class of ship:", "Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat", "Size:", 5, 4, 3, 3, 2]
-ship_sizes = board.Board((2, 6))
 npc = board.Board((11, 11))
 player = board.Board((11, 11))
 npc_ship_board = board.Board((11, 11))
 player_ship_board = board.Board((11, 11))
 
-ship_sizes.populate(ship_list)
 
 # Functions to manage the game
-
 # Clears the terminal screen based on the operating system
 def clear():
     if os.name == 'nt':  # For Windows
@@ -36,13 +32,16 @@ def clear():
     else:  # For Linux and MacOS
         os.system('printf "\033c"')  # ANSI escape sequence to clear screen
 
+
 # Creates and populates the game board
 def create_board(user):
-    user.populate(" 1234567890")  # Populate the top row with numbers
-    user.populate("ABCDEFGHIJ", user.iterline((1, 0), (1, 0)))  # Populate the first column with letters
+    # Populate the top row with numbers and the first column with letters.
+    user.populate(" 1234567890")
+    user.populate("ABCDEFGHIJ", user.iterline((1, 0), (1, 0)))
     for x in range(1, 11):
         for y in range(1, 11):
             user[x, y] = EMPTY  # Fill the rest of the board with EMPTY
+
 
 # Converts input coordinates to numerical format
 def get_coordinates(ship_input):
@@ -53,6 +52,7 @@ def get_coordinates(ship_input):
     if y == 0:
         y = 10
     return x, y
+
 
 # Validates the user input for coordinate format
 def is_valid_input(ship_input):
@@ -67,6 +67,7 @@ def is_valid_input(ship_input):
     x, y = get_coordinates(ship_input)
     return (x, y) in player
 
+
 # Identifies and marks ship positions on the board
 def id_ship(user, ship_board, coord, ship_id):
     if user == npc:
@@ -74,6 +75,7 @@ def id_ship(user, ship_board, coord, ship_id):
     else:
         player[coord] = SHIP
     ship_board[coord] = ship_id
+
 
 # Places ships on the player's board based on user input
 def place_ships(name, size, id):
@@ -98,7 +100,7 @@ def place_ships(name, size, id):
                 if (x, y-size) in player:
                     if all((x, y-i) not in player or player[(x, y-i)] == EMPTY for i in range(1, size)):
                         for i in range(1, size):
-                            player[x, y-i] = SHIP    
+                            player[x, y-i] = SHIP
                         ship_valid = True
                     else:
                         print("Error: Ship placement is overlapping")
@@ -138,6 +140,7 @@ def place_ships(name, size, id):
                 print("Invalid direction")
     clear()
     draw_boards()
+
 
 # Places ships randomly on the board for NPC or player
 def place_ships_randomly(user, ship_board, name, size, id):
@@ -181,12 +184,14 @@ def place_ships_randomly(user, ship_board, name, size, id):
     clear()
     draw_boards()
 
+
 # Displays both player and NPC boards
 def draw_boards():
     print("₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪")
     npc.draw(use_borders=False)
     print("₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪")
     player.draw(use_borders=False)
+
 
 # Manages player's turn to attack
 def players_turn():
@@ -221,12 +226,14 @@ def players_turn():
         elif npc[(x, y)] == HIT or npc[(x, y)] == MISS:
             print("You already attacked that location. Try a different location.")
 
+
 # Checks if a ship is sunk
 def check_sunken_ship(ship_board, id):
     for coord, data in ship_board.iterdata():
         if data == id:
             return False
     return True
+
 
 # Manages easy NPC's turn to attack
 def easy_npc_turn():
@@ -268,11 +275,11 @@ def add_potential_targets(x, y):
             if player[target] not in [MISS, HIT] and target not in potential_targets:
                 potential_targets.append(target)
 
+
 # Manages hard NPC's turn to attack
 def hard_npc_turn():
     global potential_targets
     attack_valid = False
-    
     while not attack_valid:
         if potential_targets:
             # Choose the next target from potential targets
@@ -308,11 +315,11 @@ def hard_npc_turn():
             # If the location has already been guessed, continue the loop to find a new target
             continue
 
+
 # Manages expert NPC's turn to attack
 def expert_npc_turn():
     global potential_targets, hit_streak, attack_direction, attack_direction_reverse
     attack_valid = False
-    
     while not attack_valid:
         if potential_targets:
             if hit_streak and attack_direction:
@@ -390,13 +397,16 @@ def expert_npc_turn():
                 # If the location has already been guessed, continue the loop to find a new target
                 continue
 
+
 # Handle the selecetion of difficulty level
 def player_difficulty(difficulty):
     difficulty()
 
+
 # Checks if all ships are sunk, indicating a win
 def check_win(ship_board):
     return bool(ship_board)
+
 
 # Ends the game with a win message
 def game_over(winner):
@@ -419,9 +429,7 @@ def main_menu():
         2. Instructions
         3. Exit
         """)
-        
         choice = input("Enter your choice (1-3): \n").strip()
-        
         if choice == "1":
             select_difficulty()
         elif choice == "2":
@@ -457,7 +465,7 @@ def display_instructions():
     7. If a guess misses, it is marked as 'O'.
     8. If a player hits a ship, they will attack again.
     9. The first player to sink all of the opponent's ships wins.
-    
+
 
     Press Enter to return to the main menu.
     """
@@ -480,7 +488,6 @@ def select_difficulty():
         """)
 
         choice = input("Enter your choice (1-3): \n").strip()
-            
         if choice == "1":
             difficulty_level = EASY
             select_placement()
@@ -503,7 +510,7 @@ def select_placement():
         ====================================
                     BATTLESHIP
         ====================================
-            Do you want to place your ships 
+            Do you want to place your ships
                 manually or randomly?
 
         1. Manually
@@ -511,7 +518,6 @@ def select_placement():
         """)
 
         choice = input("Enter your choice (1-2): \n").strip()
-            
         if choice == "1":
             game_start(False)
         elif choice == "2":
@@ -524,14 +530,14 @@ def select_placement():
 # Controls if player place the ships manually or randomly
 def player_placment(randomly):
     if randomly:
-        player[0, 0] = SHIP #Added for symetri for when manual placment is selected
+        player[0, 0] = SHIP
         place_ships_randomly(player, player_ship_board, "Carrier", 6, 5)
-        place_ships_randomly(player, player_ship_board,"Battleship", 5, 4)
-        place_ships_randomly(player, player_ship_board,"Destroyer", 4, 3)
-        place_ships_randomly(player, player_ship_board,"Submarine", 4, 2)
-        place_ships_randomly(player, player_ship_board,"Patrol Boat", 3, 1)
+        place_ships_randomly(player, player_ship_board, "Battleship", 5, 4)
+        place_ships_randomly(player, player_ship_board, "Destroyer", 4, 3)
+        place_ships_randomly(player, player_ship_board, "Submarine", 4, 2)
+        place_ships_randomly(player, player_ship_board, "Patrol Boat", 3, 1)
     else:
-        player[0, 0] = SHIP #Added so players board isint smaller before adding first ship
+        player[0, 0] = SHIP
         clear()
         draw_boards()
         place_ships("Carrier", 5, 5)
@@ -547,16 +553,17 @@ def main():
     create_board(player)
     main_menu()
 
+
 def game_start(placment_option):
     clear()
     print("Starting the game...")
     time.sleep(2)  # Pause for dramatic effect
     clear()
     place_ships_randomly(npc, npc_ship_board, "Carrier", 6, 5)
-    place_ships_randomly(npc, npc_ship_board,"Battleship", 5, 4)
-    place_ships_randomly(npc, npc_ship_board,"Destroyer", 4, 3)
-    place_ships_randomly(npc, npc_ship_board,"Submarine", 4, 2)
-    place_ships_randomly(npc, npc_ship_board,"Patrol Boat", 3, 1)
+    place_ships_randomly(npc, npc_ship_board, "Battleship", 5, 4)
+    place_ships_randomly(npc, npc_ship_board, "Destroyer", 4, 3)
+    place_ships_randomly(npc, npc_ship_board, "Submarine", 4, 2)
+    place_ships_randomly(npc, npc_ship_board, "Patrol Boat", 3, 1)
     player_placment(placment_option)
     game_play()
 
@@ -569,12 +576,12 @@ def game_play():
     draw_boards()
     while not game_finished:
         players_turn()
-        if won == True:
+        if won:
             game_over("player")
             game_finished = True
         print("Computer's turn!")
         player_difficulty(difficulty_level)
-        if won == True:
+        if won:
             game_over("npc")
             game_finished = True
 
