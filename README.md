@@ -64,3 +64,14 @@ The first player to sink all the opponent's ships wins the game.
 - **Campaign Mode**: Create a campaign mode with different levels and challenges.
 - **Timed Mode**: Introduce a timed mode where players have to make decisions within a limited time.
 
+## Data Model
+### Board Representation
+The game board is represented by a 2D grid where each cell can hold different values indicating the state of that cell.
+
+### Data Structures
+- **Board Class**: This class manages the board grid and operations related to placing ships, attacks, and drawing the board.
+- **ship_list**: A list containing the names and sizes of the ships used in the game.
+- **ship_sizes**: A Board object representing the sizes of the ships.
+- **npc and player**: Board objects representing the NPC’s and player’s game boards.
+- **npc_ship_board and player_ship_board**: Board objects tracking the ships' id on the NPC’s and player’s boards to determen when a ship is sunked.
+
