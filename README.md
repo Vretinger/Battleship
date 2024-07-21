@@ -67,7 +67,7 @@ Enjoy the game, and may the best strategist win!
 **Winning the Game:**
 - The first player to sink all of the opponent's ships wins the game.
 
-![Game Flowchart](Images/BattleshipFlowchart.drawio.png)
+![Game Flowchart](Images/BattleshipFlowchart.png)
 
 ## User Experience (UX)
 
