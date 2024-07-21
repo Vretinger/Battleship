@@ -33,11 +33,12 @@ Enjoy the game, and may the best strategist win!
    - [Integration Tests](#integration-tests)
    - [User Interface Tests](#user-interface-tests)
    - [Fixed Bugs](#fixed-bugs)
-9. [Deployment](#deployment)
+9. [PEP8 Compliance](#pep8-compliance)
+10. [Deployment](#deployment)
    - [Deploying to Heroku](#deploying-to-heroku)
    - [Forking the GitHub Repository](#forking-the-github-repository)
    - [Local Clone](#local-clone)
-10. [Credits](#credits)
+11. [Credits](#credits)
 
 ## Game Instructions
 
@@ -193,6 +194,7 @@ The game board is represented by a 2D grid where each cell can hold different va
 | **Menu Navigation**        | All menu options (start game, select difficulty, instructions) are accessible and functional. | Tested all menu options and navigated through them. | As Expected    |
 | **Instructions Display**   | Instructions are clearly displayed and provide sufficient information for gameplay. | Viewed instructions at the start of the game. | As Expected    |
 
+
 ### Fixed Bugs
 - **Bug:** NPC Hitting Outside Board
   - **Issue:** The NPC occasionally targeted positions outside the valid board range.
@@ -203,6 +205,34 @@ The game board is represented by a 2D grid where each cell can hold different va
 - **Bug:** Placing Ships Left or Right
   - **Issue:** The logic for placing ships to the left or right did not correctly account for board boundaries.
   - **Solution:** Added checks to ensure ships placed left or right do not go out of bounds and correctly occupy the intended cells.
+
+
+## PEP8 Compliance
+
+### Line Length Warnings
+In my code, you might notice that some lines exceed the recommended maximum line length of 79 characters, as specified by PEP8. The following lines are affected:
+
+- **Line 110:** E501 line too long (104 > 79 characters)
+- **Line 120:** E501 line too long (104 > 79 characters)
+- **Line 130:** E501 line too long (104 > 79 characters)
+- **Line 140:** E501 line too long (104 > 79 characters)
+- **Line 293:** E501 line too long (85 > 79 characters)
+- **Line 340:** E501 line too long (84 > 79 characters)
+
+### Reasons for Line Length Exceedances
+Here’s why these lines cannot be shortened:
+
+- **Function Calls with Multiple Arguments:**
+  
+  Function calls with multiple arguments are kept on a single line to maintain clarity. Breaking these lines could lead to reduced readability and potential confusion.
+
+- **Complex Conditionals and Logic:**
+  
+  Some lines with complex conditionals or logic are written in their current format to ensure clarity and correct representation of the logic. Splitting these lines might compromise understanding and maintainability.
+
+### Conclusion
+While the code may not adhere strictly to the 79-character limit in all cases, these longer lines are essential for maintaining code clarity and functionality. We believe that this approach ensures better readability and overall code quality.
+
 
 ## Deployment
 
