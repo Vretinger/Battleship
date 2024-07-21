@@ -1,13 +1,44 @@
 # Battleship Game
 
-Welcome to the Battleship Game! This project is a python terminal-based implementation of the classic Battleship game where you can play against the computer. The game runs in the Code institute mock terminal on Heroku. 
+Welcome to the Battleship Game! This project is an engaging Python terminal-based implementation of the classic Battleship game, designed to be played against a computer opponent. The game operates seamlessly in a Code Institute mock terminal environment on Heroku, providing an accessible and interactive experience.
 
-The game involves strategic placement and guessing of ship locations to sink your opponent's fleet before they sink yours.
+### Introduction
+
+Battleship is a timeless strategic game that combines elements of chance and skill. Upon starting the game, players are prompted to place their fleet of ships on their own grid. The ships can be placed either manually or randomly, allowing for strategic planning or a quicker setup. The opponent's ships are hidden, and the objective is to guess their locations and sink their fleet before they sink yours.
+
+Once the game begins, players take turns guessing coordinates on the opponent's grid. Each guess reveals whether it is a hit or a miss, and the game keeps track of these results to help players strategize their next move. As players make successful guesses, the opponent's ships are gradually revealed, leading to an exciting and competitive gameplay experience.
+
+The game offers different difficulty levels, ranging from easy to expert, each providing a unique challenge. In easy mode, the computer guesses randomly. In hard mode, the computer targets areas around a hit. In expert mode, the computer uses advanced tactics to predict and attack based on previously hit locations.
+
+Overall, Battleship is a fun and intellectually stimulating game that requires strategic thinking and careful planning. It is an excellent way to test your tactical skills and enjoy a classic game of naval warfare.
+
+Enjoy the game and may the best strategist win!
+
 
 [Press me to play the live version of the game!](https://ci-battleship-8283296ac1b0.herokuapp.com/)
 
 <img src="Images/BattleShipShowcaseImage.png" alt="Battleship game, Showcase how the game looks like when playing" width="600" height="400">
 
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Game Instructions](#game-instructions)
+3. [How to Play](#how-to-play)
+4. [User Experience (UX)](#user-experience-ux)
+5. [Features](#features)
+   - [Existing Features](#existing-features)
+   - [Future Features](#future-features)
+6. [Data Model](#data-model)
+7. [Frameworks, Libraries & Programs Used](#frameworks-libraries--programs-used)
+8. [Testing](#testing)
+   - [Manual Tests](#manual-tests)
+   - [Integration Tests](#integration-tests)
+   - [User Interface Tests](#user-interface-tests)
+   - [Fixed Bugs](#fixed-bugs)
+9. [Deployment](#deployment)
+   - [Deploying to Heroku](#deploying-to-heroku)
+   - [Forking the GitHub Repository](#forking-the-github-repository)
+   - [Local Clone](#local-clone)
+10. [Credits](#credits)
 
 ## Game Instructions
 
@@ -34,6 +65,36 @@ If a player hits the enemy ships they will attack again til they miss.
 
 **Winning the Game:**
 The first player to sink all the opponent's ships wins the game.
+
+<img src="Images/BattleshipFlowshart.drawio.png" alt="Battleship game flowshart, Showcase how the game flowshart">
+
+## User Experience (UX)
+
+### Battleship Game
+
+The Battleship game is a strategic guessing game that offers an engaging and interactive user experience. Players are presented with their own grid and an opponent's grid, where they must strategically place their ships and guess the locations of their opponent's ships. The goal is to sink all of the opponent's ships before they sink yours. The game is straightforward to learn, yet provides a good balance of strategy and excitement, making it suitable for players of all ages.
+
+### User Stories
+
+#### First-time Visitor Goals
+
+- **Understand how the game works**: Clear instructions are provided to help new users grasp the rules and objectives of the game.
+- **Play the game**: Once the user understands the basics, they can start playing by placing their ships and guessing the opponent's ship locations.
+- **Enjoy the experience**: The game should be engaging and fun, with an intuitive interface that enhances the overall experience.
+
+#### Returning Visitor Goals
+
+- **Continue playing**: Returning visitors may have enjoyed their previous gameplay and want to play again.
+- **Share with friends**: Users might invite friends to play the game and enjoy a competitive experience together.
+- **Explore new features**: If there are updates or new features, returning visitors will likely want to try them out.
+
+#### Frequent User Goals
+
+- **Improve strategy and accuracy**: Frequent users aim to refine their strategies and become more accurate in guessing ship locations.
+- **Increase difficulty level**: As users become more skilled, they may choose higher difficulty levels to challenge themselves.
+- **Share the game with others**: Frequent users might promote the game or invite friends to join, enhancing the social aspect of the game.
+- **Explore new features**: Users will be interested in any new features or updates that add to the gameplay experience.
+
 
 ## Features
 
@@ -96,28 +157,46 @@ The game board is represented by a 2D grid where each cell can hold different va
 - **npc and player**: Board objects representing the NPC’s and player’s game boards.
 - **npc_ship_board and player_ship_board**: Board objects tracking the ships' id on the NPC’s and player’s boards to determen when a ship is sunked.
 
+## Frameworks, Libraries & Programs Used
+
+- **Gitpod**: Used for writing and editing the code.
+- **Git**: Employed for version control and managing code changes.
+- **GitHub**: Used for storing the project files online and managing the repository.
+- **Draw.io**: Utilized for creating the logic flowchart of the Battleship game.
+- **Heroku**: Deployed the project for online access and gameplay.
+- **CI Python Linter**: Used to check the code for any issues and ensure code quality.
+
 ## Testing
-I have manually tested this project. The testing covered the following areas:
 
-#### **Unit Tests**
-- **Board Initialization**: Verified that the game boards for both the player and computer are correctly initialized and displayed.
-- **Ship Placement**: Tested manual and random ship placement to ensure ships are placed within bounds and do not overlap.
-- **Coordinate Translation**: Ensured that user inputs (e.g., "H5") are correctly translated into board coordinates.
-- **Ship Identification**: Confirmed that ships are correctly identified and placed on the board based on user input.
-- **Attack Functionality**: Checked that attacks are correctly registered on the board, including hits, misses, and marking of sunken ships.
+### Manual Tests
 
-#### **Integration Tests**
-- **Game Flow**: Ensured smooth game flow from the main menu to gameplay and end game scenarios.
-- **Player Turns**: Verified that player turns correctly handle attacks and display updated boards.
-- **Computer Turns**: Tested computer turns across all difficulty levels (Easy, Hard, Expert) to ensure they make valid moves and follow the intended strategy.
-- **Win Conditions**: Confirmed that the game correctly identifies win conditions and displays appropriate messages.
-#### **User Interface Tests**
-- **Board Display**: Ensured the board is displayed correctly after each move, with accurate representation of hits, misses, and ships.
-- **Menu Navigation**: Verified that all menu options (e.g., start game, select difficulty, instructions) are accessible and function as expected.
-- **Instructions Display**: Checked that the instructions are clearly displayed and provide sufficient information for gameplay.
+| Feature                | Expected Result                                           | Steps Taken                                    | Actual Result |
+|------------------------|-----------------------------------------------------------|------------------------------------------------|---------------|
+| **Board Initialization**   | Game boards for both player and computer are initialized and displayed correctly. | Launched the game and checked board setup.    | As Expected    |
+| **Ship Placement**         | Ships can be placed manually or randomly within bounds and do not overlap. | Tested manual and random ship placement.      | As Expected    |
+| **Coordinate Translation** | User inputs like "H5" are translated into correct board coordinates. | Entered various coordinates and checked placement. | As Expected    |
+| **Ship Identification**    | Ships are correctly identified and placed based on user input. | Verified ship placement and visibility on the board. | As Expected    |
+| **Attack Functionality**   | Attacks are registered correctly, with accurate hit, miss, and sunk ship updates. | Performed various attacks and checked board updates. | As Expected    |
+
+### Integration Tests
+
+| Feature                | Expected Result                                           | Steps Taken                                    | Actual Result |
+|------------------------|-----------------------------------------------------------|------------------------------------------------|---------------|
+| **Game Flow**              | Smooth transition from main menu to gameplay and end-game scenarios. | Navigated through the game from start to end. | As Expected    |
+| **Player Turns**           | Player turns handle attacks correctly and display updated boards. | Played several rounds, checking turn handling. | As Expected    |
+| **Computer Turns**         | Computer moves are valid and follow strategy for all difficulty levels. | Tested across Easy, Hard, and Expert modes. | As Expected    |
+| **Win Conditions**         | Game correctly identifies win conditions and displays appropriate messages. | Played to win and verified win messages. | As Expected    |
+
+### User Interface Tests
+
+| Feature                | Expected Result                                           | Steps Taken                                    | Actual Result |
+|------------------------|-----------------------------------------------------------|------------------------------------------------|---------------|
+| **Board Display**          | Board displays correctly after each move with accurate representation of hits, misses, and ships. | Made various moves and checked board display. | As Expected    |
+| **Menu Navigation**        | All menu options (start game, select difficulty, instructions) are accessible and functional. | Tested all menu options and navigated through them. | As Expected    |
+| **Instructions Display**   | Instructions are clearly displayed and provide sufficient information for gameplay. | Viewed instructions at the start of the game. | As Expected    |
 
 
-### Bug Fixing
+### Fixed bugs
 - **Bug**: NPC Hitting Outside Board
     - **Issue**: The NPC occasionally targeted positions outside the valid board range.
     - **Solution**: Implemented checks to ensure the NPC only selects valid coordinates within the board boundaries.
@@ -130,14 +209,54 @@ I have manually tested this project. The testing covered the following areas:
 
 
 ## Deployment
-This project was deployed using Code Institue's mock terminal for Heroku.
-- **Steps for deployment**
-    - Fork or clone this repository
-    - Create a new Heroku app
-    - Add a config Var in Heroku's Settings. The key is PORT and the value is 8000.
-    - Set the buildpacks to "Python" and "NodeJS" in that order
-    - Link the Heroku app to the repository
-    - Click on **Deploy**
+
+### Deploying to Heroku
+
+To deploy the Battleship game to Heroku, follow these steps. The deployment allows the Python code to be executed in a terminal within a web browser.
+
+1. **Log in to Heroku or create a new account.**
+2. **Create a new app:**
+    - On the main Heroku page, click "New" and select "Create new app".
+    - Choose a unique app name and select your region.
+    - Click "Create app".
+3. **Configure settings:**
+    - Navigate to the "Settings" tab.
+    - Locate "Config Vars" and click "Reveal Config Vars".
+    - Add a new key-value pair with `PORT` as the key and `8000` as the value, then click "Add".
+4. **Set up Buildpacks:**
+    - Scroll down to "Buildpack" and click "Add buildpack".
+    - Select "Python".
+    - Repeat the step to add another buildpack, this time selecting "Node.js". Ensure "Python" is listed first.
+5. **Deploy the application:**
+    - Navigate to the "Deploy" tab.
+    - Select GitHub as the deployment method.
+    - Search for your repository and link it to the Heroku app.
+    - Choose either "Enable Automatic Deploys" for continuous deployment or "Manual Deploy" to deploy manually.
+
+### Forking the GitHub Repository
+
+Forking the repository allows you to create a copy of the original repository in your GitHub account, enabling you to view and modify the code without affecting the original repository.
+
+1. **Log in to GitHub and locate the Battleship repository.**
+2. **Fork the repository:**
+    - At the top of the repository page, under the main navigation, click the "Fork" button.
+    - A copy of the repository will be created in your GitHub account.
+
+### Local Clone
+
+To create a local clone of the Battleship repository:
+
+1. **Log in to GitHub and locate the Battleship repository.**
+2. **Clone the repository:**
+    - Under the repository name, click the "Code" button.
+    - Choose to clone with HTTPS, SSH, or GitHub CLI, and copy the provided URL.
+    - Open Git Bash.
+    - Change the current working directory to the location where you want the cloned directory to be created.
+    - Type `git clone` and paste the URL copied in the previous step.
+    - Press Enter, and your local clone will be created.
+
+By following these steps, you can deploy the Battleship game to Heroku, fork the repository for personal use, and create a local clone for development and testing.
+
 
 
 ## Credits
