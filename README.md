@@ -6,7 +6,7 @@ The game involves strategic placement and guessing of ship locations to sink you
 
 [Press me to play the live version of the game!](https://ci-battleship-8283296ac1b0.herokuapp.com/)
 
-<img src="Images/BattleShipShowcaseImage.png" alt="Battleship game, Showcase on different devices" width="600" height="400">
+<img src="Images/BattleShipShowcaseImage.png" alt="Battleship game, Showcase how the game looks like when playing" width="600" height="400">
 
 
 ## Game Instructions

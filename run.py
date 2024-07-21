@@ -81,13 +81,20 @@ def id_ship(user, ship_board, coord, ship_id):
 def place_ships(name, size, id):
     ship_valid = False
     while not ship_valid:
-        ship_input = input(f'Enter your {name}({size}) start location. E.g."H5"\n').upper()
+        ship_input = input((
+            f'Enter your {name}({size}) start location. E.g. "H5"\n'
+        )).upper()
         if not is_valid_input(ship_input):
-            print("Invalid input. Please enter a letter followed by a number within the board range.")
+            print("""
+            Invalid input.
+            Please enter a letter followed by a number within the board range.
+            """)
             continue
         x, y = get_coordinates(ship_input)
         if player[(x, y)] != EMPTY:
-            print("Starting position already occupied. Choose a different location.")
+            print("""
+            Starting position already occupied. Choose a different location.
+            """)
             continue
         coord = (x, y)
         ship_id = id
@@ -95,7 +102,9 @@ def place_ships(name, size, id):
         clear()
         draw_boards()
         while not ship_valid:
-            ship_direction = input('Enter your ship direction "UP, DOWN, LEFT, RIGHT"\n').upper()
+            ship_direction = input((
+                'Enter your ship direction "UP, DOWN, LEFT, RIGHT"\n'
+            )).upper()
             if ship_direction == "UP":
                 if (x, y-size) in player:
                     if all((x, y-i) not in player or player[(x, y-i)] == EMPTY for i in range(1, size)):
@@ -187,19 +196,24 @@ def place_ships_randomly(user, ship_board, name, size, id):
 
 # Displays both player and NPC boards
 def draw_boards():
-    print("₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪")
-    npc.draw(use_borders=False)
     print("₪₪₪₪₪₪₪₪ PLAYER'S BOARD ₪₪₪₪₪₪₪₪")
     player.draw(use_borders=False)
+    print("₪₪₪₪₪₪₪ COMPUTER'S BOARD ₪₪₪₪₪₪₪")
+    npc.draw(use_borders=False)
 
 
 # Manages player's turn to attack
 def players_turn():
     attack_valid = False
     while not attack_valid:
-        ship_input = input(f'Your turn! Enter your the location of your attack! E.g."H5"\n').upper()
+        ship_input = input((
+            f'Your turn! Enter your the location of your attack! E.g."H5"\n'
+        )).upper()
         if not is_valid_input(ship_input):
-            print("Invalid input. Please enter a letter followed by a number within the board range.")
+            print("""
+            Invalid input.
+            Please enter a letter followed by a number within the board range.
+            """)
             continue
         x, y = get_coordinates(ship_input)
         if npc[(x, y)] == EMPTY:
@@ -224,7 +238,9 @@ def players_turn():
                 print("You hit the ship!")
             attack_valid = False
         elif npc[(x, y)] == HIT or npc[(x, y)] == MISS:
-            print("You already attacked that location. Try a different location.")
+            print("""
+            You already attacked that location. Try a different location.
+            """)
 
 
 # Checks if a ship is sunk
@@ -262,12 +278,14 @@ def easy_npc_turn():
                 time.sleep(2)
                 attack_valid = False
         else:
-            # If the location has already been guessed, continue the loop to find a new target
+            # If the location has already been guessed,
+            # continue the loop to find a new target.
             continue
 
 
 def add_potential_targets(x, y):
-    # Adds surrounding coordinates to potential targets if they are within bounds and not already guessed
+    # Adds surrounding coordinates to potential targets
+    # if they are within bounds and not already guessed.
     possible_targets = [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]
     for target in possible_targets:
         tx, ty = target
@@ -312,7 +330,8 @@ def hard_npc_turn():
                 time.sleep(2)
             attack_valid = False
         else:
-            # If the location has already been guessed, continue the loop to find a new target
+            # If the location has already been guessed,
+            # continue the loop to find a new target.
             continue
 
 
@@ -377,14 +396,18 @@ def expert_npc_turn():
                 clear()
                 draw_boards()
                 if sinked:
-                    print(f"Computer attacked {chr(x+64)}{y} and sank your ship!")
+                    print(f"""
+                    Computer attacked {chr(x+64)}{y} and sank your ship!
+                    """)
                     time.sleep(2)
                     potential_targets = []
                     hit_streak = []
                     attack_direction = None
                     attack_direction_reverse = False
                 else:
-                    print(f"Computer attacked {chr(x+64)}{y} and hit your ship!")
+                    print(f"""
+                    Computer attacked {chr(x+64)}{y} and hit your ship!
+                    """)
                     time.sleep(2)
                     if len(hit_streak) == 2 and not attack_direction:
                         # Determine direction based on two consecutive hits
@@ -394,7 +417,8 @@ def expert_npc_turn():
                             attack_direction = "HORIZONTAL"
                 attack_valid = False
             else:
-                # If the location has already been guessed, continue the loop to find a new target
+                # If the location has already been guessed,
+                # continue the loop to find a new target.
                 continue
 
 
@@ -411,7 +435,9 @@ def check_win(ship_board):
 # Ends the game with a win message
 def game_over(winner):
     if winner == "player":
-        print("Congratulations! You have sunk all enemy ships and won the game!")
+        print("""
+        Congratulations! You have sunk all enemy ships and won the game!
+        """)
     elif winner == "npc":
         print("Game Over! The NPC has sunk all your ships.")
     sys.exit()
